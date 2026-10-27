@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Undead F6 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* One world: the Undead look itself. The page around the mock is night; the mock uses the menu's own colours. */
+  --page: #0d0b0f;
+  --page-ink: #ece4e7;
+  --page-muted: #a3969c;
+  --page-line: #2c2329;
+  --accent: #b0182c;
+  --accent-ink: #ef6b7d;
+  --display: "Ubuntu", "Segoe UI", system-ui, sans-serif;
+  --body: "Ubuntu", "Segoe UI", system-ui, sans-serif;
+  /* Layout: lessons on the left, a live copy of the F6 menu on the game on the right; one column on phones. */
+  color-scheme: dark;
+}
+.look[data-look="undead"] {
+  --BG:#121016; --BAR:#1d0c12; --EDGE:#4a1a24; --TEXT:#f2e9eb; --MUTED:#b8a7ac;
+  --RED:#b0182c; --RED_TEXT:#ef6b7d; --TITLE:#f6d7dc; --OFF:#3a2e33; --FIELD:#1c171b;
+  --FIELD_EDGE:#4a2a33; --BUTTON:#2a0f16; --BUTTON_HOVER:#3d121d; --GOOD:#9ce09c; --KNOB:#f2e9eb;
+  --WARN:#ffb06a; --WARN_BG:#4a1a10; --DANGER:#ef6b7d; --ON_ACCENT:#ffffff; --SEL:#b0182c; --ZEBRA:#0b090d; --HOVER:#24121a;
+}
+.look[data-look="dark"] {
+  --BG:#1e1e1e; --BAR:#2c2c2e; --EDGE:#3a3a3c; --TEXT:#f5f5f7; --MUTED:#98989d;
+  --RED:#0a84ff; --RED_TEXT:#64a8ff; --TITLE:#ffffff; --OFF:#48484a; --FIELD:#161618;
+  --FIELD_EDGE:#3a3a3c; --BUTTON:#3a3a3c; --BUTTON_HOVER:#48484a; --GOOD:#30d158; --KNOB:#ffffff;
+  --WARN:#ff9f0a; --WARN_BG:#3d2a10; --DANGER:#ff453a; --ON_ACCENT:#ffffff; --SEL:#0a84ff; --ZEBRA:#171717; --HOVER:#2a2a2c;
+}
+.look[data-look="light"] {
+  --BG:#ececec; --BAR:#dedede; --EDGE:#c7c7cc; --TEXT:#1d1d1f; --MUTED:#6e6e73;
+  --RED:#007aff; --RED_TEXT:#0062cc; --TITLE:#1d1d1f; --OFF:#c7c7cc; --FIELD:#ffffff;
+  --FIELD_EDGE:#c7c7cc; --BUTTON:#ffffff; --BUTTON_HOVER:#e5e5ea; --GOOD:#248a3d; --KNOB:#ffffff;
+  --WARN:#c93400; --WARN_BG:#ffe8cc; --DANGER:#d70015; --ON_ACCENT:#ffffff; --SEL:#007aff; --ZEBRA:#e0e0e4; --HOVER:#e4e4e9;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); color: var(--page-ink); font-family: var(--body); }
+body { padding: 20px 16px 48px; }
+.top { max-width: 1340px; margin: 0 auto 16px; display: flex; gap: 16px; align-items: end; justify-content: space-between; flex-wrap: wrap; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 26px; margin: 0 0 4px; text-wrap: balance; }
+h1 span { color: var(--accent-ink); }
+.lede { color: var(--page-muted); margin: 0; font-size: 14px; line-height: 1.5; max-width: 62ch; }
+.keys { display: flex; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--page-muted); }
+.keys span { border: 1px solid var(--page-line); border-radius: 7px; padding: 5px 9px; background: #141015; }
+.keys b { color: var(--page-ink); font-weight: 500; }
+.wrap { max-width: 1340px; margin: 0 auto; display: grid; grid-template-columns: 250px 1fr; gap: 22px; align-items: start; }
+@media (max-width: 980px) { .wrap { grid-template-columns: 1fr; } .lessons { position: static !important; max-height: none !important; } }
+
+/* Lessons list */
+.lessons { position: sticky; top: 14px; max-height: calc(100vh - 28px); overflow: auto; border: 1px solid var(--page-line); border-radius: 10px; padding: 8px; background: #110d12; }
+.lessons h2 { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink); margin: 10px 8px 4px; font-weight: 700; }
+.lessons h2:first-child { margin-top: 4px; }
+.lesson { display: flex; width: 100%; gap: 8px; align-items: baseline; text-align: left; background: none; border: 0; color: var(--page-ink); font: inherit; font-size: 13.5px; padding: 6px 8px; border-radius: 7px; cursor: pointer; }
+.lesson .no { color: var(--page-muted); font-size: 11px; font-variant-numeric: tabular-nums; min-width: 18px; }
+.lesson:hover { background: #1d151b; }
+.lesson.on { background: var(--accent); color: #fff; }
+.lesson.on .no { color: #fff; opacity: .8; }
+.lesson.done:not(.on) .no::after { content: " ✓"; color: #9ce09c; }
+.lesson:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+.note { margin: 12px 6px 4px; padding: 9px 10px; border-radius: 8px; background: #17120f; border-left: 3px solid #ffb06a; font-size: 12.5px; line-height: 1.5; color: var(--page-muted); }
+.note b { color: var(--page-ink); font-weight: 500; }
+
+/* Coach card above the mock */
+.coach { border: 1px solid var(--page-line); border-radius: 10px; background: #141015; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; align-items: center; margin-bottom: 12px; }
+.coach .kicker { font-size: 11px; color: var(--accent-ink); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.coach h3 { margin: 2px 0 4px; font-size: 18px; font-weight: 700; text-wrap: balance; }
+.coach p { margin: 0; font-size: 14px; line-height: 1.55; color: #d9cfd3; max-width: 72ch; }
+.coach p + p { margin-top: 6px; }
+.coach .try { color: #ffd27a; }
+.coach .nav2 { display: flex; gap: 8px; align-items: center; grid-row: span 2; }
+.coach .count { color: var(--page-muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pbtn { background: #1f171d; color: var(--page-ink); border: 1px solid var(--page-line); border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 13.5px; cursor: pointer; }
+.pbtn:hover { border-color: #6a3a48; }
+.pbtn.go { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+.pbtn:disabled { opacity: .4; cursor: default; }
+@media (max-width: 640px) { .coach { grid-template-columns: 1fr; } .coach .nav2 { grid-row: auto; } }
+
+/* The game behind */
+.scene { position: relative; border-radius: 12px; overflow: hidden; padding: 18px; min-height: 700px;
+  background:
+    radial-gradient(ellipse at 18% 88%, #2b3b2a 0 17%, transparent 18%),
+    radial-gradient(ellipse at 78% 92%, #24331f 0 22%, transparent 23%),
+    linear-gradient(180deg, #2a3f5c 0%, #4f6b7c 50%, #34462c 51%, #26331f 100%); }
+.scene::after { content: "the game"; position: absolute; left: 12px; bottom: 8px; font-size: 11px; color: rgba(255,255,255,.5); }
+.scene.desk { background: linear-gradient(135deg, #1b2a44, #3a2340 60%, #18222f); display: grid; place-items: center; }
+.scene.desk::after { content: "your desktop (the game is minimized)"; }
+
+/* ===== Mock pieces (the menu's own look) ===== */
+.look { color: var(--TEXT); font-size: 13px; }
+.win { background: var(--BG); border: 1px solid var(--EDGE); border-radius: 10px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.45); max-width: 880px; position: relative; }
+.titlebar { display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: var(--BAR); border-bottom: 1px solid var(--EDGE); position: relative; cursor: grab; }
+.wtitle { font-weight: 700; font-size: 16px; color: var(--TITLE); white-space: nowrap; }
+.icons { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.icon { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 6px; cursor: pointer; border: 0; background: none; padding: 0; color: var(--MUTED); }
+.icon:hover { background: var(--BUTTON_HOVER); color: var(--TEXT); }
+.icon.green { color: var(--GOOD); }
+.search { position: relative; flex: 1; max-width: 290px; }
+.search input { width: 100%; background: var(--FIELD); color: var(--TEXT); border: 1px solid var(--FIELD_EDGE); border-radius: 6px; padding: 5px 9px 5px 27px; font: inherit; font-size: 12.5px; }
+.search input:focus { outline: none; border-color: var(--RED); }
+.search svg { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: var(--MUTED); }
+.results { position: absolute; top: calc(100% + 4px); left: 0; right: -90px; background: var(--BAR); border: 1px solid var(--RED); border-radius: 6px; z-index: 6; max-height: 300px; overflow: auto; display: none; padding: 4px; }
+.results.open { display: block; }
+.res { display: flex; justify-content: space-between; gap: 12px; padding: 5px 8px; border-radius: 5px; cursor: pointer; }
+.res:nth-child(even) { background: var(--ZEBRA); }
+.res:hover, .res.hi { background: var(--SEL) !important; color: var(--ON_ACCENT); }
+.res .where { color: var(--MUTED); font-size: 11.5px; white-space: nowrap; }
+.res:hover .where, .res.hi .where { color: var(--ON_ACCENT); opacity: .85; }
+.fbody { display: grid; grid-template-columns: 150px 1fr; }
+@media (max-width: 640px) { .fbody { grid-template-columns: 1fr; } .side { display: flex; overflow-x: auto; gap: 4px; border-right: 0 !important; border-bottom: 1px solid var(--EDGE); } .side .grp { display: none; } }
+.side { background: var(--BAR); border-right: 1px solid var(--EDGE); padding: 8px 6px 12px; }
+.grp { font-size: 10.5px; font-weight: 700; color: var(--RED_TEXT); letter-spacing: .07em; padding: 10px 8px 3px; }
+.grp:first-child { padding-top: 2px; }
+.nav { display: block; width: 100%; text-align: left; border: 0; background: none; color: var(--TEXT); font: inherit; font-size: 13px; padding: 5px 8px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+.nav:hover { background: var(--BUTTON_HOVER); }
+.nav.on { background: var(--SEL); color: var(--ON_ACCENT); }
+.content { padding: 10px 18px 8px; height: 520px; overflow: auto; background: var(--BG); }
+.ptitle { font-size: 17px; font-weight: 700; color: var(--TITLE); margin: 2px 0 2px; }
+.page { display: none; }
+.page.on { display: block; }
+.help { border-top: 1px solid var(--EDGE); background: var(--BAR); padding: 7px 14px; color: var(--MUTED); font-size: 12px; min-height: 34px; line-height: 1.45; }
+.help b { color: var(--TEXT); font-weight: 500; }
+.grip { display: grid; place-items: center; padding: 3px 0 5px; background: var(--BG); color: var(--MUTED); cursor: ns-resize; font-size: 10px; letter-spacing: 2px; }
+.sec { font-size: 11px; font-weight: 700; color: var(--RED_TEXT); margin: 14px 0 4px; letter-spacing: .03em; text-transform: uppercase; }
+.rows { display: flex; flex-direction: column; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 8px; margin: 0 -8px; border-radius: 5px; min-height: 29px; }
+.rows > .row:nth-child(even) { background: var(--ZEBRA); }
+.rows > .row:hover { background: var(--HOVER); }
+.row.sub { padding-left: 26px; }
+.row.sub.off { opacity: .45; }
+.row .l { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+.row .r { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.sw { width: 30px; height: 16px; border-radius: 8px; background: var(--OFF); position: relative; border: 0; cursor: pointer; flex: none; transition: background .15s; padding: 0; }
+.sw::after { content: ""; position: absolute; width: 12px; height: 12px; border-radius: 50%; background: var(--KNOB); top: 2px; left: 2px; transition: left .15s; }
+.sw.on { background: var(--RED); }
+.sw.on::after { left: 16px; }
+.btn { background: var(--BUTTON); color: var(--TEXT); border: 1px solid var(--FIELD_EDGE); border-radius: 6px; padding: 4px 11px; font: inherit; font-size: 12.5px; cursor: pointer; white-space: nowrap; }
+.btn:hover { background: var(--BUTTON_HOVER); border-color: var(--RED); }
+.btn.primary { background: var(--RED); border-color: var(--RED); color: var(--ON_ACCENT); }
+.btn.green { color: var(--GOOD); border-color: var(--GOOD); }
+.btn.danger { color: var(--DANGER); }
+.btn.sm { padding: 2px 8px; font-size: 11.5px; }
+.big { width: 100%; padding: 11px; font-size: 14px; font-weight: 700; color: var(--TITLE); border-color: var(--RED); }
+.field, .num { background: var(--FIELD); border: 1px solid var(--FIELD_EDGE); border-radius: 5px; padding: 3px 8px; color: var(--TEXT); font: inherit; font-size: 12.5px; }
+.num { width: 54px; text-align: center; font-variant-numeric: tabular-nums; }
+.field { min-width: 120px; }
+.dd { display: inline-flex; gap: 6px; align-items: center; justify-content: space-between; min-width: 110px; background: var(--FIELD); border: 1px solid var(--FIELD_EDGE); border-radius: 5px; padding: 3px 8px; cursor: pointer; }
+.dd::after { content: "▾"; color: var(--MUTED); font-size: 10px; }
+.dim { color: var(--MUTED); font-size: 11.5px; }
+.good { color: var(--GOOD); }
+.warn { color: var(--WARN); }
+.seg { display: flex; gap: 3px; flex-wrap: wrap; }
+.seg span { padding: 3px 9px; border-radius: 6px; font-size: 12px; color: var(--MUTED); cursor: pointer; white-space: nowrap; border: 1px solid transparent; }
+.seg span:hover { background: var(--BUTTON_HOVER); color: var(--TEXT); }
+.seg span.on { background: var(--RED); color: var(--ON_ACCENT); }
+.card { border: 1px solid var(--EDGE); border-radius: 8px; padding: 9px 11px; background: var(--FIELD); margin-top: 8px; }
+.card .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.card .name { font-weight: 700; color: var(--TITLE); }
+.card .acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
+.warnbar { background: var(--WARN_BG); color: var(--WARN); padding: 7px 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 500; margin-top: 6px; }
+.list { border: 1px solid var(--EDGE); border-radius: 6px; overflow: hidden; }
+.list > div { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 5px 9px; min-height: 28px; font-variant-numeric: tabular-nums; }
+.list > div:nth-child(even) { background: var(--ZEBRA); }
+.list > div.sel { background: var(--SEL); color: var(--ON_ACCENT); }
+.list > div.sel .dim { color: var(--ON_ACCENT); opacity: .85; }
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--EDGE); margin: 8px 0 6px; flex-wrap: wrap; }
+.tabs span { padding: 5px 10px; cursor: pointer; color: var(--MUTED); border-bottom: 2px solid transparent; font-size: 12.5px; }
+.tabs span.on { color: var(--TEXT); border-bottom-color: var(--RED); }
+.tabs span:hover { color: var(--TEXT); }
+.kind { font-size: 9.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 5px; border-radius: 3px; min-width: 42px; text-align: center; flex: none; }
+.k-map { background: #10304a; color: #8fd0ff; } .k-fight { background: #4a1018; color: #ffb3bd; }
+.k-quest { background: #3a3010; color: #ffd27a; } .k-item { background: #123a24; color: #9ce0b4; } .k-flow { background: #2c1f40; color: #cdb6ff; }
+kbd { font-family: inherit; font-size: 11px; border: 1px solid var(--FIELD_EDGE); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; }
+
+/* Pop-ups over the game */
+.dimmer { position: absolute; inset: 0; background: rgba(0,0,0,.35); display: none; place-items: center; padding: 18px; z-index: 10; }
+.dimmer.open { display: grid; }
+.sheet { background: var(--BG); border: 1px solid var(--EDGE); border-radius: 10px; overflow: hidden; box-shadow: 0 22px 60px rgba(0,0,0,.6); width: 100%; max-height: 100%; display: flex; flex-direction: column; }
+.sheet .titlebar { cursor: default; }
+.sheet .bodyp { padding: 12px 14px; overflow: auto; }
+.sheet .tag { font-size: 11px; color: var(--MUTED); }
+.foot { padding: 8px 14px; border-top: 1px solid var(--EDGE); background: var(--BAR); color: var(--MUTED); font-size: 11.5px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.foot .acts { display: flex; gap: 8px; margin-left: auto; }
+.pop { display: none; }
+.pop.on { display: flex; }
+.ed { max-width: 940px; }
+.ed .grid { display: grid; grid-template-columns: 330px 1fr; min-height: 420px; }
+@media (max-width: 760px) { .ed .grid { grid-template-columns: 1fr; } }
+.ed .left { border-right: 1px solid var(--EDGE); padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.ed .right { padding: 8px 14px 12px; }
+.steps > div { justify-content: flex-start !important; cursor: pointer; }
+.steps .n { width: 20px; text-align: right; color: var(--MUTED); font-size: 11px; flex: none; }
+.steps .t { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.steps .in { padding-left: 28px !important; }
+.steps .run .n::before { content: "▶ "; color: var(--RED_TEXT); }
+.tabpane { display: none; } .tabpane.on { display: block; }
+.log { border-top: 1px solid var(--EDGE); max-height: 84px; overflow: auto; font-size: 11.5px; }
+.log > div { display: flex; gap: 10px; padding: 3px 14px; }
+.log > div:nth-child(even) { background: var(--ZEBRA); }
+.log .tm { color: var(--MUTED); font-variant-numeric: tabular-nums; }
+.mini { width: 360px; max-width: 100%; background: var(--BG); border: 1px solid var(--EDGE); border-radius: 9px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.55); }
+.mini .bodyp { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+.chat { border: 1px solid var(--EDGE); border-radius: 6px; font-size: 12px; max-height: 160px; overflow-y: auto; }
+.chat > div { padding: 4px 8px; line-height: 1.4; }
+.chat > div:nth-child(even) { background: var(--ZEBRA); }
+.chat .who { font-weight: 500; color: var(--TITLE); }
+.chat .k { color: var(--MUTED); font-size: 11px; }
+table.inv { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+table.inv th { text-align: left; font-size: 10.5px; color: var(--RED_TEXT); padding: 5px 8px; letter-spacing: .04em; cursor: pointer; }
+table.inv td { padding: 5px 8px; }
+table.inv tr:nth-child(even) td { background: var(--ZEBRA); }
+
+/* The coach's highlight */
+.hl { outline: 3px solid #ffd27a !important; outline-offset: 2px; border-radius: 6px; animation: pulse 1.6s ease-in-out infinite; position: relative; z-index: 2; }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,210,122,.55); } 50% { box-shadow: 0 0 0 7px rgba(255,210,122,0); } }
+@media (prefers-reduced-motion: reduce) { .hl { animation: none; } .sw, .sw::after { transition: none; } }
+.flash { animation: flash 1.6s ease-out; }
+@keyframes flash { 0%, 40% { background: color-mix(in srgb, var(--RED) 45%, transparent); } 100% { background: transparent; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <h1><span>Undead</span> F6 Guide</h1>
+    <p class="lede">Learn the F6 menu by using a copy of it. Follow the lessons with <b>Next</b>, or click anything in the menu yourself: every switch, button and tab works, and the bar under each page explains what you clicked.</p>
+  </div>
+  <div class="keys">
+    <span><b>F6</b> open / close the menu</span>
+    <span>Mac: <b>fn + F6</b></span>
+    <span><b>Ctrl+F</b> search (Mac: <b>Cmd+F</b>)</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="lessons" id="lessons" aria-label="Lessons"></aside>
+
+  <main>
+    <section class="coach" id="coach" aria-live="polite">
+      <div>
+        <div class="kicker" id="c-kicker"></div>
+        <h3 id="c-title"></h3>
+        <div id="c-body"></div>
+      </div>
+      <div class="nav2">
+        <span class="count" id="c-count"></span>
+        <button class="pbtn" id="c-back" type="button">Back</button>
+        <button class="pbtn go" id="c-next" type="button">Next</button>
+      </div>
+    </section>
+
+    <div class="scene" id="scene">
+      <!-- The F6 menu -->
+      <div class="look win" id="f6" data-look="undead">
+        <div class="titlebar" id="k-titlebar" title="Hold to drag">
+          <span class="wtitle">Undead</span>
+          <div class="search" id="k-search">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+            <input id="q" type="search" placeholder="Search  (Ctrl+F)" autocomplete="off" aria-label="Search the menu">
+            <div class="results" id="results" role="listbox"></div>
+          </div>
+          <div class="icons">
+            <button class="icon" id="k-lock" type="button" title="Click to lock the window in place." aria-label="Lock">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path id="shackle" d="M5 7V5a3 3 0 0 1 6 0"/></svg>
+            </button>
+            <button class="icon" id="k-look" type="button" title="Look: Undead (click: Dark)" aria-label="Change look">
+              <span id="lookglyph" style="font-size:15px">💀</span>
+            </button>
+            <button class="icon" id="k-attack" type="button" title="Auto attack: off. Click to switch on." aria-label="Auto attack">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 2l8 8M2 2h3M2 2v3M14 2l-8 8M14 2h-3M14 2v3M5 11l-2 2M11 11l2 2M4 9l3 3M12 9l-3 3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="fbody">
+          <nav class="side" id="k-side" aria-label="Pages"></nav>
+          <div>
+            <div class="content" id="content"></div>
+            <div class="help" id="help">Hover for help. In this guide: click anything.</div>
+            <div class="grip" id="k-grip" title="Drag to resize. Double-click to fit.">≡</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pop-ups over the game -->
+      <div class="dimmer" id="dimmer"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ---------- Small builders for menu rows ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tipAttr = (label, tip) => ` data-label="${esc(label)}" data-tip="${esc(tip)}"`;
+function sw(label, tip, on = false, extra = "") {
+  return `<div class="row ${extra}"${tipAttr(label, tip)}><span class="l">${esc(label)}</span><button type="button" class="sw${on ? " on" : ""}" aria-label="${esc(label)}" aria-pressed="${on}"></button></div>`;
+}
+function sub(label, tip, on, parent) {
+  return `<div class="row sub" data-parent="${parent}"${tipAttr(label, tip)}><span class="l">${esc(label)}</span><button type="button" class="sw${on ? " on" : ""}" aria-label="${esc(label)}" aria-pressed="${on}"></button></div>`;
+}
+function choice(label, tip, opts, sel) {
+  return `<div class="row"${tipAttr(label, tip)}><span class="l">${esc(label)}</span><span class="seg">${opts.map(o => `<span class="${o === sel ? "on" : ""}">${esc(o)}</span>`).join("")}</span></div>`;
+}
+function line(label, html, tip) {
+  return `<div class="row"${tipAttr(label, tip)}><span class="l">${html}</span></div>`;
+}
+function rowR(label, left, right, tip) {
+  return `<div class="row"${tipAttr(label, tip)}><span class="l">${left}</span><span class="r">${right}</span></div>`;
+}
+const sec = t => `<div class="sec">${esc(t)}</div>`;
+const b = (t, tip, open, cls = "") => `<button type="button" class="btn ${cls}" data-tip="${esc(tip)}" data-label="${esc(t)}"${open ? ` data-open="${open}"` : ""}>${esc(t)}</button>`;
+
+/* ---------- The pages (labels as the game shows them) ---------- */
+const GROUPS = [
+  ["SYSTEM", ["monitor", "performance", "display"]],
+  ["CHARACTER", ["looks", "wardrobe", "privacy"]],
+  ["WORLD", ["map", "players", "data"]],
+  ["PLAY", ["party", "tasks"]],
+];
+const NAMES = { monitor: "Monitor", performance: "Performance", display: "Display", looks: "Looks", wardrobe: "Wardrobe", privacy: "Privacy", map: "Map", players: "Players", data: "Data", party: "Party", tasks: "Tasks" };
+
+const PAGES = {
+monitor: () => `
+  <div class="rows">${line("Running", `<span class="good">● Running: Smooth</span>`, "Records, logs and checks running now. They cost some FPS while on.")}</div>
+  ${sec("Graphics")}
+  <div class="rows">
+    ${rowR("Cap", `Display: <b>144 FPS</b>`, `<span class="dim">Cap</span><input class="num" id="k-cap" value="240" aria-label="Cap FPS">`, "Display: frames drawn on your screen in the last second. Cap: the most frames drawn per second (6 to 999). Empty or 0: no cap. Type a number and press Enter.")}
+    <div class="warnbar" data-label="Cap at 144" data-tip="Your screen can't show more FPS than its refresh rate: frames above that are never seen, they only make heat.">Your screen shows 144 FPS at most: frames above that are never seen, they only make heat. ${b("Cap at 144", "Sets Cap to your screen's refresh rate.")}</div>
+    ${line("Quality line", "Quality: High · MSAA 4x · Supersampling 1x", "The game's Quality setting, and the MSAA and supersampling in use.")}
+    ${line("Renderer", "Renderer: DirectX 12 <span class=\"dim\">(Mac: Metal)</span>", "The graphics the game draws with.")}
+  </div>
+  ${sec("Memory")}
+  <div class="rows">
+    ${line("RAM", "RAM: 1.4 GB", "Memory the game uses right now.")}
+    ${line("Graphics memory", "Graphics memory: 1.2 GB / 8 GB", "Your graphics card's memory in use, out of what it has. (On a Mac this shows 'not available'.)")}
+    ${rowR("Extras", `<span style="color:var(--RED_TEXT);font-weight:700;font-size:11px">EXTRAS</span>`, `<button class="icon" type="button" aria-label="Choose the memory lines" data-tip="Choose the memory lines: RAM, Peak RAM, In use, Reserved, RAM trend, Graphics memory, Graphics held, Download cache, Sounds, Game files, Breakdown." data-label="Extras">⚙</button>`, "The gear chooses which extra memory lines show.")}
+  </div>
+  <div style="margin-top:10px">${b("Free memory", "Frees unused memory. Safe anytime.", "", "")}</div>`,
+
+performance: () => `
+  ${sec("Graphics")}
+  <div class="rows">
+    ${sw("Ask renderer at launch", "Pick Vulkan, DirectX 12 or OpenGL each time the game starts (try another if the game won't start or shows a black screen). Off: the last one that worked. Windows only: a Mac always uses Metal.")}
+    ${line("Quality", "Quality: High <span class=\"dim\">(the game's own setting)</span>", "Shows the game's Quality level. Says 'Quality: log in first.' before you log in.")}
+    ${rowR("MSAA", "MSAA", `<span class="seg"><span>Off</span><span>2x</span><span class="on">4x</span><span>8x</span></span>`, "Smooths the edges of shapes. Higher looks smoother and costs more FPS.")}
+    ${rowR("Supersampling", "Supersampling", `<span class="seg"><span class="on">1x</span><span>2x</span><span>3x</span></span>`, "Draws the whole game bigger, then shrinks it. Very heavy: best for screenshots.")}
+    ${sw("Smooth", "Draws frames between the game's own 24 a second, up to Cap FPS. The rows below choose what moves smoothly.", true)}
+    ${sub("My character", "You move smoothly.", true, "Smooth")}
+    ${sub("Other players", "Other players move smoothly.", true, "Smooth")}
+    ${sub("Monsters and NPCs", "Monsters and NPCs move smoothly.", true, "Smooth")}
+    ${sub("Map scenery", "Moving parts of the map move smoothly.", false, "Smooth")}
+    ${sub("Idle", "Idle animations (standing still) are smooth too.", true, "Smooth")}
+    ${sw("Fast Effects", "Cheaper light effects. Big FPS boost in busy rooms.", true)}
+    ${sw("Fast Glow", "Glows drawn in one pass: faster, slightly less soft.", true)}
+    ${sw("Static Backgrounds", "Map decorations stop after one loop.")}
+    ${sw("Static Players", "Other players become still pictures. Saves a lot of FPS.")}
+    ${sw("Group Effects", "Moves blend effects so they're drawn together, in one go. Faster, same look. If an effect ever shows above or below the wrong thing, turn this off.", true)}
+    ${sw("Loading Indicators", "The flame on players still loading. Off: they fade in once they're ready instead.", true)}
+  </div>
+  ${sec("Performance")}
+  <div class="rows">
+    ${sw("Background Power Saving", "2 seconds after you click away from the game, it freezes: it stops drawing and mutes. You stay connected.", true)}
+    ${sw("Skip Idle Mouse Checks", "While the mouse doesn't move, what's under it isn't looked up again. Saves CPU. If walking ever stops partway, turn this off.", true)}
+  </div>
+  ${sec("Restart")}
+  <div class="rows">
+    ${sw("V-Sync", "On: each frame waits for your screen, so no tearing and less heat. Off: more FPS, possible tearing, more heat. Changes when the game restarts (it asks first).", true)}
+    ${sw("Multithreaded Rendering", "Drawing and sending frames run on their own CPU threads. Smoother in busy rooms; uses more CPU. Changes when the game restarts (it asks first).")}
+  </div>`,
+
+display: () => `
+  ${sec("Window")}
+  <div class="rows">
+    ${sw("Full screen", "Fill your screen (same as Alt+Enter).")}
+    ${sw("Fit to screen", "Stretch the game to fill the window.", true)}
+  </div>
+  ${sec("Interface")}
+  <div class="rows">
+    ${choice("UI", "Default: the game's own HUD. Undead: the Undead UI. Clean: no HUD, only your character and the map (the bottom bar stays, blurred). The Undead UI needs the game's Chat UI on: if it's off, Undead asks to turn it on and restart.", ["Default", "Undead", "Clean"], "Undead")}
+    ${sw("Edit UI", "Move, resize and hide the game's UI pieces. Your changes are saved as you go.")}
+    <div class="row sub off" data-parent="Edit UI" data-label="Editing UI" data-tip="Drag to move, use the wheel to resize, right-click to hide, middle-click to reset, and Shift+click to select a group."><span class="l dim">Editing UI: drag to move, wheel to resize, right-click to hide, middle-click to reset, Shift+click to select a group.</span><span class="r">${b("Reset piece", "The selected piece back to the game's own place, size and colour.")}${b("Reset all", "Every piece back to the game's own place, size and colour.")}</span></div>
+  </div>`,
+
+looks: () => `
+  ${sec("Your character")}
+  <div class="rows">
+    ${rowR("Name", "Name", `<input class="field" placeholder="your real name" maxlength="24" aria-label="Name"><span class="btn sm" style="background:#e64b5f;width:22px">&nbsp;</span><button class="btn sm" type="button" data-tip="The game's own colour." data-label="Reset colour">↺</button>`, "Your name above your head, in your portrait and on your chat lines. Only you see it; empty is your real name.")}
+    ${rowR("Guild", "Guild", `<span class="seg"><span class="on">Real</span><span>Custom</span><span>Hidden</span></span>`, "The guild line under your name. Custom lets you type one. Only you see it.")}
+    ${sw("Weapon in back hand", "Your weapon is drawn in your back hand (behind you), and an off-hand weapon in your front hand. Only you see it.")}
+    ${sw("Switch gender", "Your character shows as the other gender. Only you see it, and Kage Bunshin copies get it too.")}
+    ${rowR("Custom animations", "Custom animations", `${b("Default", "The game's own animations.")}<span class="dd">Voltaires Black Unicorn</span>`, "Default: the game's own. The list: animations that come with Undead (only on your screen). Some have a Transitions switch and one switch per effect.")}
+  </div>`,
+
+wardrobe: () => `
+  ${sec("Copy a player's look")}
+  <div class="rows">
+    ${rowR("Player", "Player", `<input class="field" placeholder="player name" aria-label="Player name">${b("Grab", "Copy this player's look into the boxes below.")}`, "Type a player's name and press Grab to copy their look.")}
+    ${rowR("Take", "Take", `<span class="seg"><span class="on">Showing</span><span>Equipped</span></span>`, "Showing: what they look like in game. Equipped: what they have equipped under cosmetics.")}
+  </div>
+  ${sec("On your character")}
+  <div class="rows">
+    ${["Weapons", "Armors", "Helms", "Capes", "Pets", "Grounds"].map(k => rowR(k, k, `<input class="field" placeholder="item .swf" aria-label="${k} file"><button class="btn sm" type="button" data-tip="Your own item file (.swf) from this PC." data-label="Open file">📁</button><button class="btn sm" type="button" data-tip="Add to favorites." data-label="Add to favorites">+</button><button type="button" class="sw" aria-label="Wear"></button>`, "Item file, like items/capes/RedCape.swf. The switch wears it. Only you see it.")).join("")}
+    ${sw("Hair", "Wear this hairstyle (grabbed from a player). Only you see it.")}
+    ${sw("Name", "Show the grabbed name and guild over your head instead of yours. Only you see it.")}
+    ${rowR("Colours", "Colours", `${["#e8c4a8","#3b2a20","#4a7bd0","#b0182c","#222","#d4af37"].map(c => `<span style="width:22px;height:15px;border-radius:3px;background:${c};display:inline-block;border:1px solid var(--FIELD_EDGE)"></span>`).join("")}<button type="button" class="sw" aria-label="Wear colours"></button>`, "Skin, Hair, Eyes, Base, Trim, Accessory. Wear these colours. Only you see them.")}
+  </div>
+  ${sec("Favorites")}
+  <div class="rows">
+    ${rowR("Sort", "Sort", `<span class="seg"><span class="on">By type</span><span>Newest</span></span>`, "By type: sorted like AQW. Newest: newest first.")}
+    ${rowR("Favorite", "Red Cape <span class=\"dim\">capes</span>", `${b("Assign", "Put it in the Capes box.")}${b("Remove", "Take it off your favorites.")}`, "Your saved items. Press + next to an item to keep it here.")}
+  </div>
+  ${sec("Everyone")}
+  <div class="rows">${sw("Copy my gear", "Everyone wears your weapon, armor, helm, cape, pet and ground (Wardrobe try-ons too). Only you see it. Off at every start.")}</div>
+  <p class="dim">Only you see these. Nothing is sent to the game server.</p>`,
+
+privacy: () => `
+  ${sec("What others see on your screen")}
+  <div class="rows">
+    ${sw("Hide room number", "The area box reads \"3 players in battleon-(hidden)\", and chat lines lose the room number too. Only on your screen: good for screenshots and streams.")}
+    ${sw("Hide footprint", "Chat times show 69:69 (new lines), the Options menu hides the server name and clock, and your gold and ACs show 69. Only on your screen.")}
+    ${sw("Random names", "Everyone, you too, gets an animal's name. A name you set in Looks > Name is shown for you instead.")}
+  </div>`,
+
+map: () => `
+  ${sec("Cells")}
+  <div class="rows">
+    ${line("Map", `Map: battleunderb · <span class="good">● You: Enter (Spawn)</span>`, "Which map you're in and where you stand.")}
+  </div>
+  <input class="field" style="width:100%;margin:6px 0" placeholder="Find a cell or monster" aria-label="Find a cell or monster">
+  <div class="dim" data-tip="Pads come from the map's own arrows." data-label="Pads">3 cells. Pick a pad (where you land), then Jump.</div>
+  <div class="rows">
+    ${rowR("Enter", `<b>Enter</b> <span class="dim">You're here.</span>`, `<span class="dd">Spawn</span>${b("Jump", "Go to Enter at Spawn.")}`, "A cell of the map. Pick a pad, then Jump.")}
+    ${rowR("r2", `<b>r2</b> <span class="dim">Skeleton Warrior ×3</span>`, `<span class="dd">Left</span>${b("Jump", "Go to r2 at Left.")}`, "This cell has 3 Skeleton Warriors. Jump takes you there.")}
+    ${rowR("r3", `<b>r3</b> <span class="dim">Undead Giant ×1</span>`, `<span class="dd">Left</span>${b("Jump", "Go to r3 at Left.")}`, "The monsters in each cell are listed by name.")}
+  </div>
+  ${sec("Preview a map")}
+  <div class="rows">
+    ${rowR("Maps you grabbed", `<span class="dd">battleunderb.swf</span>`, `${b("📁 Other file", "Any map .swf on this PC.")}${b("Load", "Show this map. Nothing is sent to the server until Back.", "", "primary")}`, "Maps you grabbed: map files in Desktop\\Undead Grabs (Data > Files saves them). Load one to walk around it. To the server you're still where you were; Back puts you there again.")}
+  </div>
+  ${sec("Map parts")}
+  <div class="rows">
+    ${sw("Every part", "Off: only the map's buttons (music, backgrounds, menus...). On: every piece of this cell, pictures too.")}
+    ${sw("btnMusic", "Off hides it (only on your screen; it can't be clicked then). Saved for this map.", true)}
+    ${sw("btnBackground", "Off hides it (only on your screen; it can't be clicked then). Saved for this map.", true)}
+  </div>`,
+
+players: () => `
+  ${sec("Hide on other players")}
+  <div class="rows">
+    ${sw("Hide", "Hide other players' gear. Only you see it. The rows below pick what.", false)}
+    ${sub("Weapons", "Hide their weapons.", true, "Hide")}
+    ${sub("Armors", "Show their class instead of cosmetic armor.", false, "Hide")}
+    ${sub("Helms", "Hide helms (hair shows).", true, "Hide")}
+    ${sub("Capes", "Hide capes.", true, "Hide")}
+    ${sub("Pets", "Hide pets.", true, "Hide")}
+    ${sub("Grounds", "Hide ground effects.", true, "Hide")}
+  </div>
+  ${sec("Copies of you")}
+  <div class="rows">
+    ${rowR("Kage Bunshin", "Kage Bunshin", `${b("Add", "A copy of you where you stand.", "", "primary")}`, "A copy of you where you stand: your name and guild, your outfit with Wardrobe try-ons. Give it a speech bubble or an emote (\"/dance\", \"/idle\" to stand still). Only you see it.")}
+    ${sw("Hover", "On: pointing at a copy in the game opens its box. Off: control copies from this list.", true)}
+    ${rowR("Copy 1", `<button class="btn sm danger" type="button" data-tip="Take this copy away." data-label="Remove copy">✕</button> Copy 1`, `${b("Reposition", "Move this copy to where you stand now.")}<input class="field" placeholder="Say… or /dance" aria-label="Say"><button class="btn sm" type="button" data-tip="Close its speech bubble." data-label="Close bubble">✕ bubble</button>`, "One row per copy.")}
+  </div>`,
+
+data: () => `
+  <div class="tabs" data-tabs="data"><span class="on" data-pane="dq">Quest</span><span data-pane="ds">Shop</span><span data-pane="df">Files</span></div>
+  <div class="tabpane on" id="dq">
+    ${sec("Quest")}
+    <div class="rows">
+      ${sw("Auto turn in", "Turns in these quests as soon as you have the items, as many at once as Max would. Bot-like, so a ban risk.")}
+      ${sub("Re-accept", "With Auto turn in: when the game drops a quest after a turn-in, take it again.", true, "Auto turn in")}
+      ${rowR("Quest row", `<button class="btn sm danger" type="button" data-tip="Take it off the list and abandon the quest." data-label="Remove quest">X</button> Bone Dust <span class="dim">(id)</span>`, `<span class="good">Ready: turns in 3 at once.</span>`, "Your quests: noted when you accept one in the game. Accept takes it again; the line says how it's going.")}
+      ${rowR("Quest row 2", `<button class="btn sm danger" type="button" data-tip="Take it off the list and abandon the quest." data-label="Remove quest">X</button> Undead Giant <span class="dim">(id)</span>`, `${b("Accept", "Accept this quest.")}<span class="dim">Not accepted.</span>`, "A quest you dropped: Accept takes it again.")}
+    </div>
+    <div style="display:flex;gap:6px;margin-top:8px">${b("Abandon all quests", "Abandon every quest you have (and your maids') and empty this list. Asks Yes/No first.")}${b("Clear list", "Clear the whole list. Asks Yes/No first.")}</div>
+    ${sec("Quests in this map")}
+    <div class="rows">
+      ${rowR("NPC quests", `<b>Undead Bard</b> <span class="dim">Enter (in this cell)</span>`, `${b("Open", "Goes to this NPC, walks up to it and opens its quest list.")}${b("+ List", "Add it to your quest list above.")}${b("Accept", "Accept it now.")}`, "Every quest in this map, by the NPC that gives it.")}
+    </div>
+  </div>
+  <div class="tabpane" id="ds">
+    ${sec("Shops")}
+    <div class="rows">
+      ${rowR("Shop", `<b>Undead Bard</b> <span class="dim">Shop 1</span>`, `${b("Open", "Goes to this NPC's cell, walks up to the NPC and opens the shop, like clicking it.")}`, "Every shop in this map. The name shows once the shop was opened.")}
+    </div>
+    <div class="dim" style="margin-top:8px">The open shop's items show here, with <b>Copy</b> (name, item ID, shop item ID, cost).</div>
+  </div>
+  <div class="tabpane" id="df">
+    ${sec("SWF files")}
+    <div class="dim" data-tip="Only files the game already loaded are copied: nothing is downloaded or sent." data-label="Files on screen">Files on screen now. Saved to Desktop\\Undead Grabs\\battleunderb</div>
+    <div class="rows">
+      ${rowR("Monsters", "Monsters <span class=\"dim\">(3)</span>", b("All/None", "Select or unselect this group."), "The monster files on screen.")}
+      ${rowR("Players' gear", "Players' gear <span class=\"dim\">(14)</span>", b("All/None", "Select or unselect this group."), "Gear files of the players on screen.")}
+      ${rowR("Map", "Map <span class=\"dim\">(1)</span>", b("All/None", "Select or unselect this group."), "The map file. Map > Preview a map can load it later.")}
+    </div>
+    <div style="display:flex;gap:6px;margin-top:8px">${b("Save selected (4)", "Save the ticked files.")}${b("Save all (18)", "Save every file on screen.", "", "primary")}</div>
+  </div>`,
+
+party: () => `
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <b>Members 1/4</b>
+    <span style="display:flex;gap:6px">${b("Close all", "Log out every maid now.")}<button class="btn" type="button" id="k-plus" data-tip="Add a maid (up to 4). Opens the login form." data-label="+">+</button></span>
+  </div>
+  <div class="card" id="k-login" style="display:none">
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center">
+      <span>Username</span><input class="field" aria-label="Username">
+      <span>Password</span><input class="field" type="password" aria-label="Password">
+    </div>
+    <div class="acts">${b("Login", "Starts a hidden game and logs this character in.", "", "primary")}${b("Cancel", "Close the form.")}</div>
+    <div class="dim" style="margin-top:6px">Tab or Enter jumps to Password; Enter logs in. The password is never saved: it stays only in that maid's memory while it plays.</div>
+  </div>
+  <div class="card">
+    <div class="top"><span class="name">Hero (you)</span><span class="dim">Twilly · battleunderb, Enter, Spawn</span></div>
+    <div class="rows" style="margin-top:4px">
+      ${sw("Auto respawn", "After dying, once the game stands you up again: wait 1 s, go back to the cell and pad you died in, and walk to the spot you died on.", true)}
+      ${sw("Follow me (all maids)", "On: maids come with you (your server, map, room and cell). Off: each one stays where it is; you can send it somewhere with its chat box (/join yulgar).", true)}
+      ${sw("Humanize (all maids)", "On: a maid walks the path you walk, a little behind and beside you, and leaves through the door you used. Off: maids change cells to follow you as fast as they can. Either way they never walk onto a door by themselves.", true)}
+    </div>
+    <div class="acts">${b("Combo", "Which skill to use when (now: skills 1 to 4 in order).", "combo")}</div>
+  </div>
+  <div class="rows" style="margin-top:6px">
+    ${rowR("Party FPS", "Party FPS", `<span class="seg"><span>6</span><span class="on">12</span><span>24</span></span>`, "How often every maid's hidden game runs. Lower uses less CPU; 12 is plenty for following and fighting (Recommended). Your own game keeps its FPS.")}
+  </div>
+  <div class="card" id="k-maid">
+    <div class="top"><span class="name">Alt</span><button class="btn sm danger" type="button" data-tip="Log out and close this maid now." data-label="Close maid">X</button></div>
+    <div class="dim" data-tip="What the maid is doing. Orange lines need you: Stuck, Login failed, Follow is off, Stopped." data-label="Status">Following you · battleunderb, Enter, Spawn</div>
+    <div class="warnbar" data-label="Yes/No box" data-tip="A question in the maid's game (party invite, friend request...). Answer it here."><span>Alt: Hero has invited you to a party.</span><span style="display:flex;gap:6px">${b("Yes", "Answer Yes in the maid's game.")}${b("No", "Answer No in the maid's game.")}</span></div>
+    <div class="rows" style="margin-top:4px">
+      ${rowR("Attack", "Attack:", `<span class="seg"><span class="on">Help me</span><span>Attack anything</span><span>Off</span></span>`, "Help me: attacks what you attack. Attack anything: any monster in the cell. Off: only follows.")}
+      ${sw("Auto respawn", "Same as yours, for this maid.", true)}
+    </div>
+    <div class="acts">
+      ${b("Remote control", "Drive this maid with W A S D (your own character stands still meanwhile). Works anywhere, and it can walk through doors. Click again to stop.")}
+      ${b("Inventory", "See and equip what this maid has.", "inventory")}
+      ${b("Combo", "Which skill to use when.", "combo")}
+      ${b("Drops 2", "Drops waiting in this maid's game: Accept or Reject each.", "drops", "green")}
+      ${b("Quests", "Your quests as this maid has them: it accepts the ones you accept, and turns in like you.", "quests")}
+    </div>
+    <div style="display:flex;gap:6px;margin-top:7px"><input class="field" style="flex:1" placeholder="Chat or /command" aria-label="Chat as this maid">${b("Send", "Type as this maid and press Enter: a message to the zone, or a command like /join yulgar, /dance, /rest.")}</div>
+  </div>
+  <p class="dim">Maids play in hidden copies of the game. Closing Undead logs them all out. Bot-like play can get accounts banned.</p>`,
+
+tasks: () => `
+  <button type="button" class="btn big" id="k-editor" data-open="editor" data-label="Editor" data-tip="Make, edit and run tasks (Open .gbot is in it too).">Editor</button>
+  <div class="dim" style="margin:6px 0 2px">Use at your own risk: the game can ban accounts for this.</div>
+  <div class="card" id="k-playing" data-label="Now playing" data-tip="What's running now. Show in manager opens the Editor on it.">
+    <div class="top"><span class="good">● Running · line 3 of 5 · Bone Dust farm</span>${b("Show in manager ↗", "Opens the Editor on the running bot.", "editor")}</div>
+    <div class="acts">${b("⏸ Pause", "Pause the bot.")}${b("■ Stop", "Stop the bot.")}</div>
+  </div>
+  ${sec("Safety")}
+  <div class="dim">Yours, for every task.</div>
+  <div class="rows" id="k-safety">
+    ${line("Stop when", "<b>Stop when</b>", "What makes every bot stop or pause.")}
+    ${sub("Staff come in", "A moderator or staff member in the room: every bot stops, and you and your maids log out.", true, "")}
+    ${sub("Someone whispers", "Pauses (with a beep) so you can answer; Resume goes on.", true, "")}
+    ${sub("You're moved to a map", "Someone (or the game) sends a character to a map the bot didn't join.", true, "")}
+    ${sub("The bag is full", "So nothing it farms is lost.", true, "")}
+    ${rowR("Stop after", "Stop after", `<input class="num" value="3" aria-label="Hours"> <span class="dim">h (0: never)</span> <input class="num" value="5" aria-label="Deaths"> <span class="dim">deaths in 10 min</span>`, "A time limit for the run, and a death limit.")}
+  </div>
+  ${sec("Always")}
+  <div class="dim">On with or without a bot running. Off: all of them off.</div>
+  <div class="rows">
+    ${sw("Skip cutscenes", "Cutscenes are closed as they start.", true)}
+    ${sw("Lag killer", "The map isn't drawn (black): less lag.")}
+    ${sw("Untarget self", "You never stay targeted on yourself.", true)}
+    ${sw("Target magnet", "Your target is pulled to you. Raises the ban risk.")}
+    ${sw("Infinite range", "Your skills reach the whole cell. Raises the ban risk.")}
+    ${sw("Provoke monsters in cell", "Every monster in your cell fights you. Raises the ban risk.")}
+  </div>`,
+};
+
+/* ---------- Pop-ups ---------- */
+const POPS = {
+editor: `
+<div class="look sheet ed pop" data-pop="editor" id="p-editor">
+  <div class="titlebar"><span class="wtitle">Editor</span><span class="tag">Bone Dust farm</span>
+    <div class="icons"><button class="icon" type="button" data-close aria-label="Close">✕</button></div></div>
+  <div class="bodyp" style="padding:8px 12px;border-bottom:1px solid var(--EDGE);display:flex;gap:6px;flex-wrap:wrap;align-items:center" id="k-edhead">
+    <span class="dd" data-tip="Your bots. Pick one to edit or run it." data-label="Bot picker">Bone Dust farm</span>
+    ${b("New", "Start a new, empty bot.")}${b("Open .gbot", "A Grimlite bot file, run exactly as Grimlite runs it (your file stays as it is).")}${b("Paste", "A bot someone shared (its code), or a Grimlite .gbot's text.")}${b("Share", "Copy this bot as a share code for a friend.")}
+    <span style="margin-left:auto;display:flex;gap:6px">${b("Save", "Save this bot.")}${b("Delete", "Delete this bot (asks first).", "", "danger")}</span>
+  </div>
+  <div class="grid">
+    <div class="left">
+      <div class="seg" id="k-lists" data-tip="Steps: what the bot does, top to bottom. Skills: Grimlite's skill list. Quests: kept accepted and turned in the whole run. Drops: always taken when they drop. Boosts: used again whenever they run out. Items: taken out of the bank at Start." data-label="Lists"><span class="on">Steps</span><span>Skills</span><span>Quests</span><span>Drops</span><span>Boosts</span><span>Items</span></div>
+      <div class="list steps" id="k-steps">
+        <div data-tip="Join a map. Private: a random room number, so nobody else farms there." data-label="Join step"><span class="n">1</span><span class="kind k-map">MAP</span><span class="t">Join battleunderb (private)</span></div>
+        <div data-tip="Accept a quest (pick it by name from this map's quests)." data-label="Accept step"><span class="n">2</span><span class="kind k-quest">QUEST</span><span class="t">Accept Bone Dust quest</span></div>
+        <div class="run sel" data-tip="Repeat: the steps inside run again until its goal." data-label="Repeat step"><span class="n">3</span><span class="kind k-flow">REPEAT</span><span class="t">Repeat until the bot is stopped</span></div>
+        <div class="in" data-tip="Kill until: keeps fighting until you have the items." data-label="Kill step"><span class="n">4</span><span class="kind k-fight">FIGHT</span><span class="t">Kill Skeleton Warrior until Bone Dust ×10</span></div>
+        <div class="in" data-tip="Turn in the quest (as many at once as you can)." data-label="Turn in step"><span class="n">5</span><span class="kind k-quest">QUEST</span><span class="t">Turn in Bone Dust quest</span></div>
+      </div>
+      <div class="dim">Select a step to change it; ▲ ▼ move it. Keys: <kbd>Ctrl</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> move, <kbd>Del</kbd>, <kbd>Ctrl</kbd>+<kbd>D</kbd> duplicate, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo (Mac: Cmd).</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto" id="k-run">
+        ${b("▶ Start", "Checks the bot first (Before you start), then runs it from the first step.", "", "primary")}${b("⏸ Pause", "Pause; Resume goes on.")}${b("■ Stop", "Stop the bot.")}${b("⏭ Skip step", "Skip to the next step.")}
+      </div>
+      <div class="dim" data-tip="Runs on: you, and any Party member you tick. Each maid runs its own copy of the bot." data-label="Runs on">Runs on: ☑ You · ☐ Alt</div>
+    </div>
+    <div class="right">
+      <div class="tabs" data-tabs="ed" id="k-edtabs">
+        <span data-pane="et-info">Info</span><span class="on" data-pane="et-combat">Combat</span><span data-pane="et-item">Item</span><span data-pane="et-map">Map</span><span data-pane="et-quest">Quest</span><span data-pane="et-misc">Misc</span><span data-pane="et-misc2">Misc 2</span><span data-pane="et-opt">Options</span><span data-pane="et-bots">Bots</span>
+      </div>
+      <div class="tabpane" id="et-info"><p class="dim">The bot's name, who made it, and notes.</p></div>
+      <div class="tabpane on" id="et-combat">
+        <div class="rows">
+          ${rowR("Monster", "Monster", `<span class="dd">Skeleton Warrior</span>${b("My target", "Use what you have targeted.")}`, "Menus fill from the map you're in: no typing.")}
+          ${rowR("Kill", "Kill", `<span class="seg"><span>Attack once</span><span class="on">until</span></span>`, "Attack once: one kill, like Grimlite's Kill. Kill until: it keeps going.")}
+        </div>
+        ${sec("Rest and skills")}
+        <div class="rows">
+          ${rowR("Rest until full", "Rest until full", b("+ Add", "Add a rest step."), "Rest until HP and mana are full.")}
+          ${rowR("Combo", "Combo", `<span class="dd">Pick a preset</span>${b("+ Add", "Fight with this combo.")}`, "Combo presets are made in Party > Combo. The bot carries them, so maids get them too.")}
+        </div>
+      </div>
+      <div class="tabpane" id="et-item">${sec("Shop")}<p class="dim">Buy and sell at this map's shops (never with ACs).</p>${sec("Bank and gear")}<p class="dim">Bank items in and out, equip gear.</p>${sec("Drops and map items")}<p class="dim">Which drops to take.</p></div>
+      <div class="tabpane" id="et-map">
+        <div class="rows">
+          ${rowR("Where I am", "", b("+ Where I am", "Adds a Join for the map, cell and pad you're in now."), "The quickest way to start a bot.")}
+          ${rowR("Map", "Map", `<span class="dd">battleunderb</span><span class="seg"><span>Any</span><span class="on">Private</span><span>No.</span></span>`, "Private: a random room number for the run, so nobody else farms there.")}
+          ${rowR("Cell", "Cell", `<span class="dd">Enter</span><span class="dd">(any)</span>${b("Join", "Add a Join step.")}${b("Go to cell", "Add a Go to cell step.")}`, "Cell and pad come from the map's own arrows.")}
+        </div>
+        ${sec("Move")}<p class="dim">Walk to a spot, set your spawn point, or go to a player.</p>
+      </div>
+      <div class="tabpane" id="et-quest">
+        <div class="rows">
+          ${rowR("Quest", "Quest", `<span class="dd">Bone Dust quest</span>${b("Accept", "Add an Accept step.")}${b("Turn in", "Add a Turn in step.")}`, "Type its ID, or pick it from this map's quests or yours (▾, with a search).")}
+          ${rowR("Keep doing it", "", b("Keep doing it", "From that step on, the bot accepts it and turns it in whenever it's ready."), "Like Grimlite's quest list.")}
+        </div>
+        ${sec("Farm it")}<p class="dim">One click makes a Repeat: accept, kill until you have each item it needs, turn in.</p>
+      </div>
+      <div class="tabpane" id="et-misc">${sec("If")}<p class="dim">Conditions (have item, level, HP...) with NOT. Labels, counters, Repeat and bot control.</p></div>
+      <div class="tabpane" id="et-misc2">${sec("Wait and messages")}<p class="dim">Wait a number of seconds, show a message, beep.</p></div>
+      <div class="tabpane" id="et-opt">${sec("Drops")}<p class="dim">Drops list, rest, your own combo, boosts, auto relogin, beep on drop, provoke monsters.</p></div>
+      <div class="tabpane" id="et-bots">${sec("Your bots")}<p class="dim">Save a copy, paste a shared bot, import Grimlite .gbot files or a whole bots folder.</p></div>
+    </div>
+  </div>
+  <div class="log" data-tip="What the bot did, newest last." data-label="Log">
+    <div><span class="tm">14:02:11</span><span>Joined battleunderb-48213</span></div>
+    <div><span class="tm">14:02:15</span><span>Accepted Bone Dust quest</span></div>
+    <div><span class="tm">14:03:40</span><span>Bone Dust 7/10</span></div>
+  </div>
+</div>`,
+
+combo: `
+<div class="look sheet pop" data-pop="combo" style="max-width:640px">
+  <div class="titlebar"><span class="wtitle">Alt</span><span class="tag">Combo</span><div class="icons"><button class="icon" type="button" data-close aria-label="Close">✕</button></div></div>
+  <div class="bodyp">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span>Class: <b>ArchMage</b></span><span>Preset: <span class="dd" data-tip="None: skills 1 to 4 in order. Or pick a preset: anyone can use it." data-label="Preset">Mage burst (2 rules)</span></span></div>
+    <p class="dim">Read from the top: the first rule whose skill is ready and whose conditions all hold is used; none fits: auto attack only.</p>
+    <div class="list">
+      <div data-tip="Rule 1: used first whenever its conditions hold." data-label="Rule 1"><span>#1 ▲ ▼ Use <span class="dd">4: Arcane Sigil</span><br><span class="dim">when Mana Me ≥ 60%</span></span><button class="btn sm danger" type="button" data-tip="Delete this rule." data-label="Delete rule">✕</button></div>
+      <div data-tip="Rule 2: when rule 1 doesn't fit." data-label="Rule 2"><span>#2 ▲ ▼ Use <span class="dd">2: Arcane Flux</span><br><span class="dim">when always (whenever it's ready)</span></span><button class="btn sm danger" type="button" data-tip="Delete this rule." data-label="Delete rule">✕</button></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">${b("+ Add rule", "A new rule at the bottom.")}${b("+ condition", "Add a condition to a rule: HP, Mana, Has buff/debuff, Stacks, Time left, Skill ready, Party lowest HP, Monsters in cell...")}</div>
+    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center">${b("Save \"Mage burst\"", "Everyone using this preset gets the change.")}${b("Undo changes", "Back to the saved rules.")}<span class="dim">New preset:</span><input class="field" placeholder="name" aria-label="New preset name">${b("Save as new", "Save these rules as a new preset and use it for this character.")}</div>
+    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">${b("Copy text", "Copy these rules as text, to share or keep.")}<input class="field" placeholder="paste combo text here" aria-label="Paste combo">${b("Paste", "Paste a friend's combo text.")}${b("Delete preset", "Delete it for everyone (asks first).", "", "danger")}</div>
+  </div>
+  <div class="foot"><span>Live: what the combo did and why shows here while fighting.</span><span class="acts"><button class="btn" type="button" data-close>Close</button></span></div>
+</div>`,
+
+inventory: `
+<div class="look sheet pop" data-pop="inventory" style="max-width:640px">
+  <div class="titlebar"><span class="wtitle">Alt</span><span class="tag">Inventory</span><div class="icons"><button class="icon" type="button" data-close aria-label="Close">✕</button></div></div>
+  <div class="bodyp">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><input class="field" placeholder="Search items" aria-label="Search items"><span class="dd">All</span><span class="dd">All</span><label class="dim"><input type="checkbox"> Equipped only</label>${b("Refresh", "Read the maid's inventory again.")}<span class="dim" style="margin-left:auto">42 items · 80 bag slots</span></div>
+    <table class="inv" style="margin-top:8px"><thead><tr><th>ITEM ▲</th><th>TYPE</th><th>LVL</th><th>ENHANCEMENT</th><th></th></tr></thead><tbody>
+      <tr><td>★ ArchMage</td><td>Class</td><td>1</td><td>Wizard</td><td><span class="good">Equipped</span></td></tr>
+      <tr><td>Arcane Staff</td><td>Weapon</td><td>80</td><td>Lucky</td><td>${b("Equip", "Equips it like the inventory's Equip button (waits until out of combat).")}</td></tr>
+      <tr><td>Bone Dust</td><td>Quest items</td><td>1</td><td>(none)</td><td></td></tr>
+    </tbody></table>
+  </div>
+  <div class="foot"><span>★ equipped · click a column name to sort</span><span class="acts"><button class="btn" type="button" data-close>Close</button></span></div>
+</div>`,
+
+drops: `
+<div class="look sheet pop" data-pop="drops" style="max-width:460px">
+  <div class="titlebar"><span class="wtitle">Alt</span><span class="tag">Drops</span><div class="icons"><button class="icon" type="button" data-close aria-label="Close">✕</button></div></div>
+  <div class="bodyp">
+    <div class="list">
+      <div>Undead Energy x1 <span>${b("Accept", "Like the drop's Yes: into the maid's bag (if there's room).")}${b("Reject", "Like the drop's No: it's gone.")}</span></div>
+      <div>Bone Sigil x1 <span>${b("Accept", "Like the drop's Yes: into the maid's bag (if there's room).")}${b("Reject", "Like the drop's No: it's gone.")}</span></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:8px">${b("Accept all", "Accept every waiting drop.")}${b("Reject all", "Reject every waiting drop.")}</div>
+  </div>
+  <div class="foot"><span>Temporary items go straight into the bag.</span><span class="acts"><button class="btn" type="button" data-close>Close</button></span></div>
+</div>`,
+
+quests: `
+<div class="look sheet pop" data-pop="quests" style="max-width:520px">
+  <div class="titlebar"><span class="wtitle">Alt</span><span class="tag">Quests</span><div class="icons"><button class="icon" type="button" data-close aria-label="Close">✕</button></div></div>
+  <div class="bodyp">
+    <p class="dim">Auto turn in: on (follows yours, Data > Quest). The maid accepts every quest you accept, and turns one in with you when you turn it in yourself, with the same reward.</p>
+    <div class="list">
+      <div><span>Bone Dust quest <span class="dim">(id)</span><br><span class="dim">Bone Dust 7/10 · In progress.</span></span><span class="good">✔ Accepted</span></div>
+      <div><span>Undead Giant <span class="dim">(id)</span><br><span class="dim">Not accepted yet: accepting it like you...</span></span>${b("Accept", "The maid accepts this quest now.")}</div>
+    </div>
+  </div>
+  <div class="foot"><span></span><span class="acts"><button class="btn" type="button" data-close>Close</button></span></div>
+</div>`,
+
+restart: `
+<div class="look sheet pop" data-pop="restart" style="max-width:400px">
+  <div class="titlebar"><span class="wtitle">Restart needed</span></div>
+  <div class="bodyp" style="line-height:1.5">"V-Sync off" only changes when the game starts.<br><br>Restart now? The game saves your settings, closes and opens again by itself. You'll need to log in again.</div>
+  <div class="foot"><span></span><span class="acts"><button class="btn primary" type="button" data-close>Restart now</button><button class="btn" type="button" data-close>Cancel</button></span></div>
+</div>`,
+
+mini: `
+<div class="look mini pop" data-pop="mini" style="flex-direction:column">
+  <div class="titlebar" style="padding:6px 8px 6px 10px"><span class="wtitle" style="font-size:13px">Undead · Party</span></div>
+  <div class="bodyp">
+    <div class="warnbar"><span>Tasks · Bone Dust farm · line 4</span><span style="display:flex;gap:4px">${b("Stop", "Stop the bot.", "", "sm")}${b("Pause", "Pause the bot.", "", "sm")}</span></div>
+    <div class="tabs" style="margin:0"><span class="on">All</span><span>Hero</span><span>Alt</span></div>
+    <div class="dim">Hero · battleunderb · Enter, Spawn<br>Alt · battleunderb · Enter, Spawn<br><span class="good">Bone Dust quest: ready ×1</span></div>
+    <div class="chat">
+      <div><span class="k">14:03 [Zone]</span> <span class="who">Lynx:</span> anyone farming bone dust?</div>
+      <div><span class="k">14:04 [Whisper]</span> <span class="who">Kael:</span> hey, party?</div>
+      <div><span class="k">14:04 [Party]</span> <span class="who">Alt:</span> o/</div>
+    </div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap"><span class="dd" style="min-width:70px">As Hero</span><span class="dd" style="min-width:70px">Zone</span><input class="field" style="flex:1;min-width:90px" placeholder="Type a message…" aria-label="Message">${b("Send", "Send as the picked character (Enter also sends).", "", "sm")}</div>
+  </div>
+</div>`,
+};
+
+/* ---------- Lessons (the guided tour) ---------- */
+const STEPS = [
+  { ch: "Start", t: "Open the menu", page: "performance", sel: "#f6",
+    b: ["Press <b>F6</b> in the game to open this menu, and F6 again to close it. It works even while you're typing in chat. There's no close button: F6 is the way out.",
+        "On a Mac press <b>fn + F6</b> (F6 alone is a Mac key), or turn on 'Use F1, F2, etc. keys as standard function keys' in System Settings > Keyboard.",
+        "<span class='try'>Try it here: click the pages on the left of the menu.</span>"] },
+  { ch: "Start", t: "Pages on the left", page: "performance", sel: "#k-side",
+    b: ["The sidebar groups the pages: <b>System</b> (how the game runs), <b>Character</b> (how you look), <b>World</b> (maps, players, data) and <b>Play</b> (Party and Tasks).",
+        "The bar under each page explains whatever you point at. In the game, hover over an option to see its help."] },
+  { ch: "Start", t: "Search", page: "performance", sel: "#k-search",
+    b: ["Can't find an option? Type part of its name. Results show which page it's on; Enter or a click takes you there.",
+        "Shortcut: <b>Ctrl+F</b> with the mouse over the menu (Mac: Cmd+F).", "<span class='try'>Try it: type <b>cap</b> or <b>kage</b>.</span>"] },
+  { ch: "Start", t: "Title bar buttons", page: "performance", sel: "#k-titlebar .icons",
+    b: ["<b>Padlock</b>: locks the menu in place (unlocked, drag the title bar to move it).",
+        "<b>Look icon</b>: switches the menu's colours between Undead (skull), Dark (moon) and Light (sun). <span class='try'>Click it here.</span>",
+        "<b>Crossed swords</b>: Auto attack. Green = on: basic attack and skills (or your Combo) on whatever you target, else the nearest monster. You still move yourself."] },
+  { ch: "Start", t: "Make the menu bigger", page: "performance", sel: "#k-grip",
+    b: ["Drag the three lines at the bottom up or down to change the menu's height. Double-click them to fit."] },
+
+  { ch: "System", t: "Monitor", page: "monitor", sel: "#k-cap",
+    b: ["Your FPS, quality, renderer and memory at a glance.",
+        "<b>Cap</b> sets the most FPS. If your cap is higher than your screen can show, Undead tells you and offers <b>Cap at</b> your screen's rate: same picture, less heat.",
+        "<b>Free memory</b> frees unused memory. Safe anytime."] },
+  { ch: "System", t: "Performance: Smooth", page: "performance", sel: "[data-label='Smooth']",
+    b: ["<b>Smooth</b> draws extra frames between the game's own 24 a second, so walking and fighting look fluid. The rows under it choose what's smooth: you, other players, monsters, the map, idle poses.",
+        "<span class='try'>Turn Smooth off here: its rows grey out.</span>"] },
+  { ch: "System", t: "Performance: FPS savers", page: "performance", sel: "[data-label='Static Players']",
+    b: ["Laggy room? Try <b>Fast Effects</b>, <b>Fast Glow</b>, <b>Static Backgrounds</b> and <b>Static Players</b> (other players become still pictures).",
+        "<b>Background Power Saving</b> freezes the game 2 seconds after you click away, and you stay connected."] },
+  { ch: "System", t: "Settings that need a restart", page: "performance", sel: "[data-label='V-Sync']",
+    b: ["<b>V-Sync</b> and <b>Multithreaded Rendering</b> change when the game restarts. Undead asks first, then closes and opens the game for you. You log in again.",
+        "<span class='try'>Switch V-Sync here to see the question.</span>"] },
+  { ch: "System", t: "Display: UI styles", page: "display", sel: "[data-label='UI']",
+    b: ["<b>Default</b>: the game's own HUD. <b>Undead</b>: the Undead UI. <b>Clean</b>: no HUD, just your character and the map.",
+        "<b>Edit UI</b> lets you move, resize and hide any part of the game's UI: drag to move, mouse wheel to resize, right-click to hide, middle-click to reset."] },
+
+  { ch: "Character", t: "Looks", page: "looks", sel: "[data-label='Name']",
+    b: ["Your own <b>name</b>, <b>guild</b> and their colours, <b>Weapon in back hand</b>, <b>Switch gender</b> and <b>Custom animations</b>.",
+        "Everything here is only on your screen: other players see you as normal."] },
+  { ch: "Character", t: "Wardrobe", page: "wardrobe", sel: "[data-label='Player']",
+    b: ["Type a player's name and press <b>Grab</b> to copy their look, or put item files in the boxes yourself. The switch on each row wears it.",
+        "Hair, name and colours can be copied too. <b>+</b> keeps an item in Favorites. Only you see it."] },
+  { ch: "Character", t: "Privacy", page: "privacy", sel: "[data-label='Hide footprint']",
+    b: ["For screenshots and streams: hide your room number, hide your footprint (clock, server, gold show 69), or give everyone random animal names. Only on your screen."] },
+
+  { ch: "World", t: "Map: Cells and Jump", page: "map", sel: "[data-label='r2']",
+    b: ["Every cell of the map, with the monsters in it. Pick a pad (where you land) and press <b>Jump</b> to go there."] },
+  { ch: "World", t: "Map: Preview and parts", page: "map", sel: "[data-label='Maps you grabbed']",
+    b: ["<b>Preview a map</b> loads a map file you grabbed so you can look around it. Nothing is sent to the server; <b>Back</b> puts you where you were.",
+        "<b>Map parts</b> hides map buttons and pieces you don't want, saved per map."] },
+  { ch: "World", t: "Players: Kage Bunshin", page: "players", sel: "[data-label='Kage Bunshin']",
+    b: ["<b>Hide</b> hides other players' gear (pick weapons, armors, helms, capes, pets, grounds).",
+        "<b>Kage Bunshin</b>: press <b>Add</b> for a copy of you where you stand. Make it talk or emote with \"/dance\". Only you see it."] },
+  { ch: "World", t: "Data: Quests", page: "data", sel: "[data-label='Auto turn in']",
+    b: ["Quests you accept in the game are listed here. <b>Auto turn in</b> turns them in as soon as you have the items, as many at once as possible, and <b>Re-accept</b> takes them again.",
+        "<b>Quests in this map</b> lists every quest by NPC: Open walks you to the NPC."] },
+  { ch: "World", t: "Data: Shops and Files", page: "data", sel: "[data-tabs='data']",
+    b: ["<b>Shop</b>: every shop in the map; Open walks you to the NPC and opens it.",
+        "<b>Files</b>: save the game's SWF files you see on screen to Desktop\\Undead Grabs (maps saved here can be previewed in Map).", "<span class='try'>Click the Shop and Files tabs.</span>"] },
+
+  { ch: "Party", t: "Party: add a character", page: "party", sel: "#k-plus",
+    b: ["Party lets up to 4 of your other characters play alongside you in hidden copies of the game. Many lines still call them <b>maids</b>: same thing.",
+        "Log in with your own character first, then press <b>+</b>, type the username, Tab, the password, Enter. The password is never saved.", "<span class='try'>Click + here.</span>"] },
+  { ch: "Party", t: "Following and fighting", page: "party", sel: "#k-maid",
+    b: ["Each member follows you (map, room, cell) and fights with you. <b>Attack</b>: Help me (your target), Attack anything (the whole cell) or Off.",
+        "<b>Follow me</b>, <b>Humanize</b> and <b>Auto respawn</b> are on your card. Orange boxes are questions in their game, like party invites: answer Yes or No here.",
+        "<b>Remote control</b> drives one member with W A S D. The chat box talks as them or runs commands like /join yulgar."] },
+  { ch: "Party", t: "Combo", page: "party", pop: "combo", sel: "[data-pop='combo'] .list",
+    b: ["Rules for which skill to use when. Read from the top: the first rule whose skill is ready and whose conditions all hold is used.",
+        "Save rules as a named <b>preset</b>; anyone (you or any member) can pick it. <b>Copy text</b> / <b>Paste</b> share it with friends."] },
+  { ch: "Party", t: "Inventory", page: "party", pop: "inventory", sel: "[data-pop='inventory'] table",
+    b: ["See and equip a member's items: search, filter by type, sort by clicking a column, and <b>Equip</b>."] },
+  { ch: "Party", t: "Drops and Quests", page: "party", pop: "drops", sel: "[data-pop='drops'] .list",
+    b: ["<b>Drops</b> (green when some wait): Accept or Reject each drop in a member's game.",
+        "<b>Quests</b>: your quests as that member has them. They accept what you accept and turn in with you."] },
+  { ch: "Party", t: "The mini window", page: "party", pop: "mini", desk: true, sel: "[data-pop='mini']",
+    b: ["Minimize the game and a small <b>Undead · Party</b> window stays on top: where everyone is, quest progress, chat from all of you, and Yes/No questions.",
+        "Reply as anyone to Zone, Party, Guild or a whisper. It goes away when the game window comes back."] },
+
+  { ch: "Tasks", t: "Tasks page", page: "tasks", sel: "#k-playing",
+    b: ["Bots live here. The card shows what's running, with Pause and Stop. <b>Editor</b> opens the bot window.",
+        "Bots can get accounts banned: use them at your own risk."] },
+  { ch: "Tasks", t: "Safety", page: "tasks", sel: "#k-safety",
+    b: ["Your rules for every bot: stop when staff come in (everyone logs out), pause on whispers, stop if you get moved, stop when the bag is full, a time limit and a death limit."] },
+  { ch: "Tasks", t: "Always", page: "tasks", sel: "[data-label='Skip cutscenes']",
+    b: ["Helpers that work with or without a bot: skip cutscenes, lag killer, untarget self. Target magnet, Infinite range and Provoke raise the ban risk."] },
+  { ch: "Tasks", t: "Editor: steps", page: "tasks", pop: "editor", sel: "#k-steps",
+    b: ["A bot is a list of <b>steps</b>, run top to bottom. A Repeat runs the steps inside it again and again.",
+        "Click a step to select it; the form on the right fills in so you can change it. <span class='try'>Click the steps.</span>"] },
+  { ch: "Tasks", t: "Editor: adding steps", page: "tasks", pop: "editor", sel: "#k-edtabs",
+    b: ["The tabs on the right add steps: <b>Map</b> (join, cells, walk), <b>Combat</b> (kill, rest, combo), <b>Quest</b> (accept, turn in, Farm it), <b>Item</b> (shop, bank, drops), <b>Misc</b> (If, labels, counters).",
+        "Menus fill from the map you're in, so you pick instead of typing. <b>+ Where I am</b> on the Map tab is the quickest start.", "<span class='try'>Click the tabs.</span>"] },
+  { ch: "Tasks", t: "Editor: run and share", page: "tasks", pop: "editor", sel: "#k-run",
+    b: ["<b>▶ Start</b> checks the bot first (Before you start lists anything missing), then runs it. Pause, Stop and Skip step are next to it. <b>Runs on</b> picks you and any Party member.",
+        "<b>Open .gbot</b> runs a Grimlite bot as Grimlite does. <b>Share</b> copies a code a friend can <b>Paste</b>."] },
+  { ch: "Done", t: "That's the menu", page: "performance", sel: "#f6",
+    b: ["You've seen every page. Click around this copy as much as you like: nothing here touches your game.",
+        "In the game, hover any option for its help, and use search when you forget where something is."] },
+];
+
+/* ---------- Rendering ---------- */
+const content = document.getElementById("content");
+const side = document.getElementById("k-side");
+const dimmer = document.getElementById("dimmer");
+const scene = document.getElementById("scene");
+const f6 = document.getElementById("f6");
+let page = "performance", look = "undead";
+
+side.innerHTML = GROUPS.map(([g, ps]) => `<div class="grp">${g}</div>` + ps.map(p => `<button type="button" class="nav" data-page="${p}">${NAMES[p]}</button>`).join("")).join("");
+content.innerHTML = Object.keys(PAGES).map(p => `<section class="page" id="pg-${p}"><div class="ptitle">${NAMES[p]}</div>${PAGES[p]()}<p class="dim" style="margin-top:14px">Hover for help</p></section>`).join("");
+dimmer.innerHTML = Object.values(POPS).join("");
+
+function showPage(p) {
+  page = p;
+  document.querySelectorAll(".page").forEach(s => s.classList.toggle("on", s.id === "pg-" + p));
+  side.querySelectorAll(".nav").forEach(n => n.classList.toggle("on", n.dataset.page === p));
+  content.scrollTop = 0;
+}
+function openPop(name, desk) {
+  dimmer.querySelectorAll(".pop").forEach(x => x.classList.toggle("on", x.dataset.pop === name));
+  dimmer.classList.toggle("open", !!name);
+  scene.classList.toggle("desk", !!desk);
+  f6.style.visibility = desk ? "hidden" : "";
+  dimmer.style.background = desk ? "none" : "";
+  dimmer.querySelectorAll(".pop").forEach(x => x.dataset.look = look);
+}
+function closePop() { openPop(null, false); }
+function help(el) {
+  const tip = el.dataset.tip, label = el.dataset.label;
+  if (tip) document.getElementById("help").innerHTML = (label ? `<b>${esc(label)}</b>: ` : "") + esc(tip);
+}
+
+/* Sub-rows follow their parent switch */
+function syncSubs() {
+  document.querySelectorAll(".row.sub[data-parent]").forEach(r => {
+    const p = r.dataset.parent;
+    if (!p) return;
+    const parent = r.closest(".page, .sheet")?.querySelector(`.row:not(.sub)[data-label="${CSS.escape(p)}"] .sw`);
+    if (parent) r.classList.toggle("off", !parent.classList.contains("on"));
+  });
+}
+
+/* ---------- Clicks ---------- */
+document.addEventListener("click", e => {
+  const t = e.target;
+  const nav = t.closest(".nav");
+  if (nav) { showPage(nav.dataset.page); closePop(); syncCoachToPage(); return; }
+  const s = t.closest(".sw");
+  if (s) {
+    s.classList.toggle("on"); s.setAttribute("aria-pressed", s.classList.contains("on"));
+    const row = s.closest(".row"); if (row) help(row);
+    if (row && (row.dataset.label === "V-Sync" || row.dataset.label === "Multithreaded Rendering")) openPop("restart");
+    syncSubs(); return;
+  }
+  const seg = t.closest(".seg > span");
+  if (seg) { seg.parentElement.querySelectorAll("span").forEach(x => x.classList.toggle("on", x === seg)); const row = seg.closest("[data-tip]"); if (row) help(row); return; }
+  const tab = t.closest(".tabs > span");
+  if (tab && tab.dataset.pane) {
+    const bar = tab.parentElement; bar.querySelectorAll("span").forEach(x => x.classList.toggle("on", x === tab));
+    const root = bar.parentElement;
+    bar.querySelectorAll("span").forEach(x => { const pane = root.querySelector("#" + x.dataset.pane); if (pane) pane.classList.toggle("on", x === tab); });
+    return;
+  }
+  if (t.closest("[data-close]")) { closePop(); return; }
+  const op = t.closest("[data-open]");
+  if (op) { help(op); openPop(op.dataset.open); return; }
+  if (t.closest("#k-plus")) { const f = document.getElementById("k-login"); f.style.display = f.style.display === "none" ? "" : "none"; help(t.closest("#k-plus")); return; }
+  const step = t.closest("#k-steps > div");
+  if (step) { step.parentElement.querySelectorAll("div").forEach(x => x.classList.toggle("sel", x === step)); }
+  if (t === dimmer) { closePop(); return; }
+  const any = t.closest("[data-tip]");
+  if (any) help(any);
+});
+document.addEventListener("mouseover", e => { const el = e.target.closest("#content [data-tip]"); if (el) help(el); });
+
+/* Title bar */
+const LOOKS = [["undead", "💀", "Undead"], ["dark", "🌙", "Dark"], ["light", "☀️", "Light"]];
+document.getElementById("k-look").addEventListener("click", () => {
+  const i = (LOOKS.findIndex(l => l[0] === look) + 1) % LOOKS.length;
+  look = LOOKS[i][0];
+  f6.dataset.look = look;
+  dimmer.querySelectorAll(".pop").forEach(x => x.dataset.look = look);
+  document.getElementById("lookglyph").textContent = LOOKS[i][1];
+  document.getElementById("k-look").title = `Look: ${LOOKS[i][2]} (click: ${LOOKS[(i + 1) % 3][2]})`;
+  document.getElementById("help").innerHTML = `<b>Look</b>: ${LOOKS[i][2]}. Click again for ${LOOKS[(i + 1) % 3][2]}.`;
+});
+document.getElementById("k-lock").addEventListener("click", e => {
+  const btn = e.currentTarget, locked = btn.classList.toggle("green");
+  document.getElementById("shackle").setAttribute("d", locked ? "M5 7V5a3 3 0 0 1 6 0v2" : "M5 7V5a3 3 0 0 1 6 0");
+  document.getElementById("k-grip").style.visibility = locked ? "hidden" : "";
+  document.getElementById("help").innerHTML = locked ? "<b>Locked</b>: click to move the window again." : "<b>Unlocked</b>: drag the title bar to move the menu.";
+});
+document.getElementById("k-attack").addEventListener("click", e => {
+  const on = e.currentTarget.classList.toggle("green");
+  document.getElementById("help").innerHTML = on
+    ? "<b>Auto attack: on</b>. Basic attack and skills (or your Combo) on whatever you target, else the nearest monster in your cell. Click to switch off."
+    : "<b>Auto attack: off</b>. Click to switch on. You still move yourself.";
+});
+const grip = document.getElementById("k-grip");
+let dragY = null, startH = 0;
+grip.addEventListener("pointerdown", e => { dragY = e.clientY; startH = content.offsetHeight; grip.setPointerCapture(e.pointerId); });
+grip.addEventListener("pointermove", e => { if (dragY !== null) content.style.height = Math.max(220, Math.min(900, startH + e.clientY - dragY)) + "px"; });
+grip.addEventListener("pointerup", () => { dragY = null; });
+grip.addEventListener("dblclick", () => { content.style.height = ""; });
+
+/* Search */
+const q = document.getElementById("q"), results = document.getElementById("results");
+const INDEX = [];
+document.querySelectorAll(".page").forEach(pg => {
+  const p = pg.id.slice(3);
+  pg.querySelectorAll("[data-label]").forEach(el => {
+    const label = el.dataset.label;
+    if (!INDEX.some(x => x.label === label && x.page === p)) INDEX.push({ label, page: p, el });
+  });
+});
+let hi = 0, shown = [];
+function renderResults() {
+  const s = q.value.trim().toLowerCase();
+  shown = s ? INDEX.filter(x => x.label.toLowerCase().includes(s) || (x.el.dataset.tip || "").toLowerCase().includes(s)).slice(0, 12) : [];
+  hi = 0;
+  results.innerHTML = shown.length ? shown.map((x, i) => `<div class="res${i === 0 ? " hi" : ""}" data-i="${i}"><span>${esc(x.label)}</span><span class="where">${NAMES[x.page]}</span></div>`).join("")
+    : (s ? `<div class="res"><span class="dim">Nothing found.</span></div>` : "");
+  results.classList.toggle("open", !!s);
+}
+function goResult(i) {
+  const x = shown[i]; if (!x) return;
+  closePop(); showPage(x.page); results.classList.remove("open");
+  x.el.scrollIntoView({ block: "center", behavior: "smooth" });
+  x.el.classList.remove("flash"); void x.el.offsetWidth; x.el.classList.add("flash");
+  help(x.el); syncCoachToPage();
+}
+q.addEventListener("input", renderResults);
+q.addEventListener("keydown", e => {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); if (!shown.length) return; hi = (hi + (e.key === "ArrowDown" ? 1 : shown.length - 1)) % shown.length; results.querySelectorAll(".res").forEach((r, i) => r.classList.toggle("hi", i === hi)); }
+  else if (e.key === "Enter") { e.preventDefault(); goResult(hi); }
+  else if (e.key === "Escape") { q.value = ""; renderResults(); }
+});
+results.addEventListener("click", e => { const r = e.target.closest(".res[data-i]"); if (r) goResult(+r.dataset.i); });
+document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f" && f6.matches(":hover")) { e.preventDefault(); q.focus(); } });
+
+/* ---------- Coach ---------- */
+let cur = 0;
+const seen = new Set();
+const lessons = document.getElementById("lessons");
+(function buildLessons() {
+  let html = "", last = "";
+  STEPS.forEach((s, i) => {
+    if (s.ch !== last) { html += `<h2>${esc(s.ch)}</h2>`; last = s.ch; }
+    html += `<button type="button" class="lesson" data-step="${i}"><span class="no">${i + 1}</span><span>${esc(s.t)}</span></button>`;
+  });
+  html += `<div class="note"><b>Mac:</b> fn + F6 opens the menu, shortcuts use Cmd instead of Ctrl, and Skua scripts are Windows-only.</div>`;
+  html += `<div class="note"><b>Only on your screen:</b> Looks, Wardrobe, Privacy, Kage Bunshin and Map preview change what you see, never what others see.</div>`;
+  lessons.innerHTML = html;
+})();
+lessons.addEventListener("click", e => { const l = e.target.closest(".lesson"); if (l) go(+l.dataset.step); });
+
+function go(i) {
+  cur = Math.max(0, Math.min(STEPS.length - 1, i));
+  const s = STEPS[cur];
+  seen.add(cur);
+  document.querySelectorAll(".hl").forEach(x => x.classList.remove("hl"));
+  showPage(s.page);
+  if (s.pop) openPop(s.pop, s.desk); else closePop();
+  document.getElementById("c-kicker").textContent = s.ch;
+  document.getElementById("c-title").textContent = s.t;
+  document.getElementById("c-body").innerHTML = s.b.map(p => `<p>${p}</p>`).join("");
+  document.getElementById("c-count").textContent = `${cur + 1} / ${STEPS.length}`;
+  document.getElementById("c-back").disabled = cur === 0;
+  const next = document.getElementById("c-next");
+  next.textContent = cur === STEPS.length - 1 ? "Start over" : "Next";
+  lessons.querySelectorAll(".lesson").forEach(l => { const n = +l.dataset.step; l.classList.toggle("on", n === cur); l.classList.toggle("done", seen.has(n)); });
+  const target = s.sel ? document.querySelector(s.sel) : null;
+  if (target && s.sel !== "#f6") {
+    target.classList.add("hl");
+    const box = target.closest(".content, .bodyp, .sheet");
+    if (box && box.classList.contains("content")) box.scrollTop = Math.max(0, target.offsetTop - box.offsetTop - 60);
+  }
+  try { history.replaceState(null, "", "#step-" + (cur + 1)); } catch (_) {}
+}
+function syncCoachToPage() {
+  const i = STEPS.findIndex(s => s.page === page && !s.pop);
+  if (i >= 0 && STEPS[cur].page !== page) {
+    cur = i; const s = STEPS[i]; seen.add(i);
+    document.querySelectorAll(".hl").forEach(x => x.classList.remove("hl"));
+    document.getElementById("c-kicker").textContent = s.ch;
+    document.getElementById("c-title").textContent = s.t;
+    document.getElementById("c-body").innerHTML = s.b.map(p => `<p>${p}</p>`).join("");
+    document.getElementById("c-count").textContent = `${i + 1} / ${STEPS.length}`;
+    document.getElementById("c-back").disabled = i === 0;
+    lessons.querySelectorAll(".lesson").forEach(l => { const n = +l.dataset.step; l.classList.toggle("on", n === i); l.classList.toggle("done", seen.has(n)); });
+  }
+}
+document.getElementById("c-next").addEventListener("click", () => go(cur === STEPS.length - 1 ? 0 : cur + 1));
+document.getElementById("c-back").addEventListener("click", () => go(cur - 1));
+
+document.querySelectorAll("[data-tip]").forEach(el => { if (!el.title) el.title = el.dataset.tip; });
+syncSubs();
+const m = /^#step-(\d+)$/.exec(location.hash);
+go(m ? +m[1] - 1 : 0);
+window.addEventListener("hashchange", () => { const h = /^#step-(\d+)$/.exec(location.hash); if (h && +h[1] - 1 !== cur) go(+h[1] - 1); });
+</script>
+</body>
+</html>
